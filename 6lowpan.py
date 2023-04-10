@@ -11,16 +11,16 @@ for i in range(2):
 
 # Add nodes for LAN routers
 for i in range(3):
-    G.add_node(f"LAN{i}", type="LAN")
+    G.add_node(f"edge{i}", type="edge")
 
 # Add edges between IoT networks and LAN routers
 for i in range(3):
     for j in range(3):
-        G.add_edge(f"IoT{i}", f"LAN{j}", latency=random.uniform(0.01, 0.1))
+        G.add_edge(f"R{i}", f"edge{j}", latency=random.uniform(0.01, 0.1))
 
 # Add edges between LAN routers
 for i in range(2):
-    G.add_edge(f"LAN{i}", f"LAN{i+1}", latency=random.uniform(0.01, 0.1))
+    G.add_edge(f"edge{i}", f"edge{i+1}", latency=random.uniform(0.01, 0.1))
 
 nx.draw(G, with_labels=True)
 plt.show()
