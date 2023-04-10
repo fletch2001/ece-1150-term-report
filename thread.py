@@ -45,13 +45,16 @@ def thread_setup(lan_router):
     # connect border router to LAN
     T.add_edge(lan_router, f"thread_R{border_index}", latency=random.uniform(0.01, 0.1))
 
-def route_thread(network, source, dest):
+def route(network, source, dest):
     if dest not in network.nodes:
         # add routing delay?
 
+    path = nx.shortest_path(source, dest, "latency")
+    path_latency = sum([network[path[i]][path[i+1]]["latency"] for i in range(len(path)-1)])
 
-def plot_graph(Graph):
-    print(Graph.edges)
 
-    nx.draw(Graph, with_labels=True)
+def plot_graph(graph):
+    print(graph.edges)
+
+    nx.draw(graph, with_labels=True)
     plt.show()
