@@ -24,14 +24,14 @@ def zigbee_setup(lan_network):
     # add edges from router to router
     G.add_edge('R1', 'R2')
 
-    # add edges from router to end devices
-    for i in range(4):
-        G.add_edge('R1', 'ED' + str(i))
+# add edges from router to router
+G.add_edge('R1', 'R2', latency=random.uniform(0.01, 0.1))
 
-    for i in range(4):
-        G.add_edge('R2', 'ED' + str(i + 4))
+# add edges from router to end devices
+for i in range(4):
+    G.add_edge('R1', 'ED' + str(i), latency=random.uniform(0.01, 0.1))
 
-    # compose into lan network
-    lan_network = nx.compose(G, lan_network)
+for i in range(4):
+    G.add_edge('R2', 'ED' + str(i+4), latency=random.uniform(0.01, 0.1))
 
     lan_network.add_edge("lan_router", "R1", latency=random.uniform(0.1, 1))
