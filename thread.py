@@ -1,6 +1,7 @@
 import random
 
 import networkx as nx
+import networkx.classes
 from matplotlib import pyplot as plt
 
 def thread_setup(lan_network):
@@ -31,19 +32,31 @@ def thread_setup(lan_network):
     leader_index = random.randint(0, 6)
     T.nodes[f"thread_R{leader_index}"]["leader"] = True
 
-    # set border router
-    border_index = random.randint(0, 6)
-    T.nodes[f"thread_R{border_index}"]["border"] = True
+    # determine number of border routers
+    num_borders = random.randint(1, 3)
+
+    border_indexes = []
+
+    for n in range(num_borders):
+        i = random.randint(0, 6)
+        while(i in border_indexes):
+            i = random.randint(0, 6)
+
+        border_indexes.append(i)
 
     # compose/join networks into one lan network
     lan_network = nx.compose(T, lan_network)
 
     plot_graph(lan_network)
 
-    # connect border router to LAN
-    lan_network.add_edge("lan_router", f"thread_R{border_index}", latency=random.uniform(0.01, 0.1))
+    # set border routers
+    for n in range(num_borders):
+        T.nodes[f"thread_R{border_indexes[n]}"]["border"] = True
 
-    plot_graph(lan_network)
+        # connect border routers to LAN
+        lan_network.add_edge("lan_router", f"thread_R{border_indexes[n]}", latency=random.uniform(0.01, 0.1))
+
+    return lan_network
 
 def route(network, source, dest):
     # if dest not in network.nodes:
