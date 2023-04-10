@@ -35,7 +35,3 @@ def zigbee_setup(lan_network):
     lan_network = nx.compose(G, lan_network)
 
     lan_network.add_edge("lan_router", "R1", latency=random.uniform(0.1, 1))
-
-# plot network
-nx.draw(G, with_labels=True)
-plt.show()
