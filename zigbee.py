@@ -1,3 +1,5 @@
+import random
+
 import networkx as nx
 import matplotlib.pyplot as plt
 
@@ -19,14 +21,14 @@ for i in range(8):
     eds.append('ED' + str(i))
 
 # add edges from router to router
-G.add_edge('R1', 'R2')
+G.add_edge('R1', 'R2', latency=random.uniform(0.01, 0.1))
 
 # add edges from router to end devices
 for i in range(4):
-    G.add_edge('R1', 'ED' + str(i))
+    G.add_edge('R1', 'ED' + str(i), latency=random.uniform(0.01, 0.1))
 
 for i in range(4):
-    G.add_edge('R2', 'ED' + str(i+4))
+    G.add_edge('R2', 'ED' + str(i+4), latency=random.uniform(0.01, 0.1))
 
 # plot network
 nx.draw(G, with_labels=True)
