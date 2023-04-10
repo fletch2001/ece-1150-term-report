@@ -38,7 +38,7 @@ def zigbee_setup(lan_network):
     lan_network = nx.compose(G, lan_network)
 
     # connect LAN router to zigbee
-    lan_network.add_edge("lan_router", "R1", latency=random.uniform(0.1, 1))
-    lan_network.add_edge("lan_router", "R2", latency=random.uniform(0.1, 1))
+    lan_network.add_edge("lan_router", "R1", latency=random.uniform(0.01, 0.1))
+    lan_network.add_edge("lan_router", "R2", latency=random.uniform(0.01, 0.1))
 
     return lan_network
