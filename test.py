@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 G = nx.Graph()
 
 # Add nodes for IoT networks
-for i in range(3):
-    G.add_node(f"IoT{i}", type="IoT")
+for i in range(2):
+    G.add_node(f"R{i}", type="R")
 
 # Add nodes for LAN routers
 for i in range(3):
@@ -22,7 +22,7 @@ for i in range(3):
 for i in range(2):
     G.add_edge(f"LAN{i}", f"LAN{i+1}", latency=random.uniform(0.01, 0.1))
 
-nx.draw(G)
+nx.draw(G, with_labels=True)
 plt.show()
 
 # Simulate packet transmission
