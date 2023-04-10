@@ -3,18 +3,11 @@ import random
 import networkx as nx
 from matplotlib import pyplot as plt
 
-def thread_setup(lan_router):
+def thread_setup(lan_network):
     # create graph
     T = nx.Graph()
 
     # define thread device types
-
-    # add 2 border routers
-    T.add_node("thread_BR0", type="border")
-    T.add_node("thread_BR1", type="border")
-
-    # add thread leader
-    T.add_node("thread_L0")
 
     # create six thread mesh devices
     for i in range(6):
@@ -42,16 +35,27 @@ def thread_setup(lan_router):
     border_index = random.randint(0, 6)
     T.nodes[f"thread_R{border_index}"]["border"] = True
 
+    # compose/join networks into one lan network
+    lan_network = nx.compose(T, lan_network)
+
+    plot_graph(lan_network)
+
     # connect border router to LAN
-    T.add_edge(lan_router, f"thread_R{border_index}", latency=random.uniform(0.01, 0.1))
+    lan_network.add_edge("lan_router", f"thread_R{border_index}", latency=random.uniform(0.01, 0.1))
+
+    plot_graph(lan_network)
 
 def route(network, source, dest):
-    if dest not in network.nodes:
+    # if dest not in network.nodes:
         # add routing delay?
 
     path = nx.shortest_path(source, dest, "latency")
     path_latency = sum([network[path[i]][path[i+1]]["latency"] for i in range(len(path)-1)])
 
+# time
+# hops
+# network layout
+#
 
 def plot_graph(graph):
     print(graph.edges)
