@@ -21,12 +21,12 @@ def zigbee_setup(scale, lan_network):
 
     # create mesh topology routers
     for r in range(zigbee_num_routers):
-        G.add_node(f'z_R{r}')  # add each router to graph
+        G.add_node(f'z_R{r}', network="zigbee")  # add each router to graph
         routers.append(f'z_R{r}')  # add to list as well
 
     # create end devices
     for i in range(zigbee_num_nodes):
-        G.add_node('z_ED' + str(i))
+        G.add_node('z_ED' + str(i), network="zigbee")
         eds.append('z_ED' + str(i))
 
     # mesh 'em

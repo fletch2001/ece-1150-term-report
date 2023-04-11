@@ -14,7 +14,7 @@ def thread_setup(scale, lan_network):
 
     # create six thread mesh devices
     for i in range(thread_num_nodes):
-        T.add_node(f"thread_R{i}")
+        T.add_node(f"thread_R{i}", network="thread")
 
     # mesh 'em
     for i in range(thread_num_nodes):
@@ -26,7 +26,7 @@ def thread_setup(scale, lan_network):
     # add a random number of edge nodes to each mesh node
     for i in range(thread_num_nodes):
         for n in range(random.randint(1, 10)):
-            T.add_node(f"thread_dev_{i}_{n}")
+            T.add_node(f"thread_dev_{i}_{n}", network="thread")
             # add latency again
             T.add_edge(f"thread_R{i}", f"thread_dev_{i}_{n}", latency=0.01)
 
