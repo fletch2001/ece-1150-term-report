@@ -2,50 +2,60 @@
 import networkx as nx
 
 # our files
+from helpers import *
+
 from zigbee import *
 from thread import *
 
-def dissimilar_random_ints(lower, upper, count):
-    return_list = []
-    for n in range(count):
-        i = random.randint(lower, upper)
-        while i in return_list:
-            i = random.randint(lower, upper)
-        return_list.append(i)
-
-    return return_list
-
 # SETUP
 
-# define LAN
-LAN = nx.Graph()
+latencies = []
+num_nodes = []
 
-# add main router
-LAN.add_node("lan_router", latency=random.uniform(0.1, 10))
+runs_per_size = 20
 
-LAN = thread_setup(1, LAN)
-LAN = zigbee_setup(1, LAN)
+for s in range(4, 9):
+    current_size_latencies = []
+    current_size_num_nodes = []
+    for t in range(runs_per_size):
+        # define LAN
+        LAN = nx.Graph()
+        # add main router
+        LAN.add_node("lan_router", latency=0.01)
+        LAN, thread_nodes = thread_setup(s, LAN)
+        LAN, zigbee_nodes = zigbee_setup(s, LAN)
 
-plot_graph(LAN)
+        total_nodes = thread_nodes + zigbee_nodes
+        total_nodes_with_router = total_nodes + 1
 
-# RUN
+        current_size_num_nodes.append(total_nodes)
 
-SIM_RUNS = 5
-NUM_PACKETS = 100
+        # RUN
 
-# get total number of nodes
-total_nodes = LAN.number_of_nodes()
+        SIM_RUNS = 5
+        NUM_PACKETS = 100
 
-for sim_run in range(SIM_RUNS):
+        # to hold latency experienced by packet 0-99
+        latency = []
 
-    for pkt_num in range(NUM_PACKETS):
-        # get source and destination randomly
-        source_dest = dissimilar_random_ints(0, total_nodes - 1, 2)
-        print(source_dest)
+        for pkt_num in range(NUM_PACKETS):
+            # get source and destination randomly
+            source_dest = dissimilar_random_ints(0, total_nodes - 1, 2)
 
-        node_list = list(LAN.nodes)
-        source = node_list[source_dest[0]]
-        dest = node_list[source_dest[1]]
-        print(source, dest)
+            node_list = list(LAN.nodes)
+            source = node_list[source_dest[0]]
+            dest = node_list[source_dest[1]]
 
-        route(LAN, source, dest)
+            # add latency to latency array
+            latency.append(route(LAN, source, dest))
+
+        current_size_latencies.append(sum(latency))
+
+    latencies.append(sum(current_size_latencies) / runs_per_size)
+    num_nodes.append(sum(current_size_num_nodes) / runs_per_size)
+
+fig, ax = plt.subplots()
+ax.plot(num_nodes, latencies)
+ax.set_xlabel("average number of nodes")
+ax.set_ylabel("average latency")
+plt.show()
