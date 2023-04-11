@@ -15,7 +15,7 @@ from thread import *
 latencies = []
 num_nodes = []
 
-runs_per_size = 5
+runs_per_size = 20
 
 start_time = time()
 
@@ -40,7 +40,7 @@ for s in range(1, 9):
         # RUN
 
         SIM_RUNS = 5
-        NUM_PACKETS = 100
+        NUM_PACKETS = 2000
 
         # to hold latency experienced by packet 0-99
         latency = []
