@@ -1,7 +1,6 @@
 import random
 import math
 import networkx as nx
-import matplotlib.pyplot as plt
 
 
 def zigbee_setup(scale, lan_network):

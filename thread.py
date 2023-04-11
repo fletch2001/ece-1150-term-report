@@ -1,8 +1,6 @@
 import random
-
 import networkx as nx
-import networkx.classes
-from matplotlib import pyplot as plt
+
 
 def thread_setup(scale, lan_network):
     random.seed(1)  # use same seed every time
@@ -62,14 +60,3 @@ def thread_setup(scale, lan_network):
         lan_network.add_edge("lan_router", f"thread_R{border_indexes[n]}", latency=0.01)
 
     return lan_network, total_nodes
-
-# time
-# hops
-# network layout
-#
-
-def plot_graph(graph):
-    print(graph.edges)
-
-    nx.draw(graph, with_labels=True)
-    plt.show()

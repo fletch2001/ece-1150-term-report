@@ -1,5 +1,6 @@
 # nwx
 import networkx as nx
+import os
 
 # our files
 from helpers import *
@@ -12,9 +13,9 @@ from thread import *
 latencies = []
 num_nodes = []
 
-runs_per_size = 20
+runs_per_size = 5
 
-for s in range(4, 9):
+for s in range(1, 9):
     current_size_latencies = []
     current_size_num_nodes = []
     for t in range(runs_per_size):
@@ -51,11 +52,22 @@ for s in range(4, 9):
 
         current_size_latencies.append(sum(latency))
 
+        # save network to image
+        nx.draw(LAN, with_labels=True)
+
+        save_plt_to_png(f"simoutput/networks/lan{t}_{total_nodes}_nodes.png")
+
     latencies.append(sum(current_size_latencies) / runs_per_size)
     num_nodes.append(sum(current_size_num_nodes) / runs_per_size)
 
+
+# make figure
 fig, ax = plt.subplots()
 ax.plot(num_nodes, latencies)
+ax.set_title("effect of LAN network size (in nodes) on relative latency")
 ax.set_xlabel("average number of nodes")
 ax.set_ylabel("average latency")
+
+
+save_plt_to_png('simoutput/simplot.png')
 plt.show()
